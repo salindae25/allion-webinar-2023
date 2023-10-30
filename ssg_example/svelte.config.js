@@ -17,9 +17,10 @@ const config = {
     prerender: {
       handleHttpError: ({ path, referrer, message }) => {
         // ignore deliberate link to shiny 404 page
-        if (path === "/country/" || path.includes("/country")) {
+        if (path === "/country" || path.includes("/country/")) {
           return;
         }
+
         if (path === "/countries/0") {
           return;
         }

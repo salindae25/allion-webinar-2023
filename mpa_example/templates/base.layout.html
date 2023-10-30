@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MPA site-{{template "title" .}}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="/static/css/style.css" rel="stylesheet" />
+    <script
+      src="https://unpkg.com/htmx.org@1.9.6"
+      integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
+      crossorigin="anonymous"
+    ></script>
+    {{ template "styles"}} {{ template "scripts" . }}
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">Logo</a>
+        <div>
+          <a href="/" class="nav-link">Home</a>
+          <a href="/countries" class="nav-link">Countries</a>
+          <a href="/about" class="nav-link">About</a>
+        </div>
+      </nav>
+    </header>
+    <main>{{ template "body" .}}</main>
+
+    <script>
+      (function () {
+        window.addEventListener("load", () => {
+          const populationElements =
+            document.querySelectorAll(".population") || [];
+          populationElements.forEach((e) => {
+            e.innerText = parseInt(e.innerText).toLocaleString("us-US");
+          });
+        });
+      })();
+    </script>
+
+    <script>
+      (function (anchors, url, i, a) {
+        while ((a = anchors[i++]) && a.classList)
+          url.split("?")[0] === a.href && a.classList.add("current");
+      })(document.querySelectorAll("a.nav-link"), location.href, 0);
+    </script>
+  </body>
+</html>

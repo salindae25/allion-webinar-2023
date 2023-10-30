@@ -1,0 +1,47 @@
+{{define "title"}} Country - {{.Name.Common}} {{end}} {{define "styles"}}
+{{end}} {{define "body"}}
+
+<h1>{{.Name.Common}} title</h1>
+<div class="container left-align">
+  <div class="content">
+    <img src="{{.Flags.Png}}" alt="{{.Flags.Alt}}" />
+    <div>
+      <span class="property">Population</span>:
+      <span class="population">{{.Population}}</span>
+    </div>
+    <div>
+      <span class="property">Region</span>:
+      <span>{{.Region}}</span>
+    </div>
+    <div>
+      <span class="property">Capital</span>: {{with .Capital}}
+      <span>{{index . 0}}</span>
+      {{else}}
+      <span>-</span>
+      {{end}}
+    </div>
+    <div>
+      <span class="property">Likes</span>
+      {{block "country_likes" .}}
+      <span id="country_likes">{{.Likes}}</span>
+      {{end}}
+    </div>
+    <div>
+      {{with .Flags.Alt}}
+      <div>
+        <span class="property">About Flag</span>
+        <p>{{.}}</p>
+      </div>
+    </div>
+    {{end}}
+    <!-- <form action="/country/{{.Ccn3}}/like" method="POST">
+      <button type="submit">Like</button>
+    </form> -->
+
+    <form hx-post="/country/{{.Ccn3}}/like" hx-target="#country_likes">
+      <button type="submit">Like</button>
+    </form>
+  </div>
+</div>
+
+{{end}} {{define "scripts"}} {{end}}

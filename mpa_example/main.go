@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 
 	"test/mpa_example/config"
 	"test/mpa_example/data"
@@ -17,6 +18,16 @@ var port = ":8080"
 
 func AppRouter() http.Handler {
 	r := chi.NewRouter()
+	r.Use(cors.Handler(cors.Options{
+		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
+		// AllowedOrigins: []string{"https://localhost:*", "http://*"},
+		AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300, // Maximum value not ignored by any of major browsers
+	}))
 	r.Use(middleware.Logger)
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
@@ -31,8 +42,9 @@ func AppRouter() http.Handler {
 	r.Get("/", handlers.Repo.Home)
 	r.Get("/about", handlers.Repo.About)
 	r.Get("/country/{ccn}", handlers.Repo.Country)
+	r.Post("/country/{ccn}/like", handlers.Repo.CountryLike)
 	r.Post("/countries-json", handlers.Repo.CountriesWithJson)
-	r.Get("/countries/{page}/page", handlers.Repo.Countries)
+	r.Get("/countries", handlers.Repo.Countries)
 
 	fileServer := http.FileServer(http.Dir("./static/"))
 	r.Handle("/static/*", http.StripPrefix("/static", fileServer))

@@ -21,6 +21,7 @@ type Country struct {
 			M string `json:"m"`
 		} `json:"fra"`
 	} `json:"demonyms"`
+	Likes int `json:"likes" default:"1"`
 	Flags struct {
 		Png string `json:"png"`
 		Svg string `json:"svg"`

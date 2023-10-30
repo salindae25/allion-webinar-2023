@@ -3,6 +3,9 @@
   import CountryCard from "$lib/component/CountryCard.svelte";
   import { onMount } from "svelte";
 
+  /**
+   * @type {any[]}
+   */
   let countries = [];
   /**
    * @param {string} index
@@ -13,7 +16,7 @@
   }
 
   onMount(async () => {
-    await loadData(0);
+    await loadData("0");
   });
 </script>
 

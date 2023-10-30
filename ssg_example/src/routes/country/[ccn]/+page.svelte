@@ -11,10 +11,7 @@
    * }
    */
   export let data;
-  async function addLike() {
-    const [res, _status] = await postCountryLike($page.params["ccn"]);
-    country = res;
-  }
+ 
   $: country = data;
 </script>
 
@@ -52,7 +49,6 @@
           </div>
         {/if}
       </div>
-      <button type="button" on:click={addLike}>Like</button>
     </div>
   </div>
 {/if}

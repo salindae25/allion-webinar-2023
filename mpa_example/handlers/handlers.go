@@ -62,13 +62,79 @@ func (m *Repository) Country(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Incorrect url parameter"))
 		return
 	}
-	render.RenderPage(w, "country", country)
+
+	contentType := r.Header.Get("accept")
+	switch contentType {
+	case "application/json":
+		msg, err := json.Marshal(country)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+		w.Header().Add("Content-Type", "application/json")
+		w.Write(msg)
+		return
+	default:
+		render.RenderPage(w, "country", country)
+		return
+	}
+}
+
+func (m *Repository) CountryLike(w http.ResponseWriter, r *http.Request) {
+	ccn := chi.URLParam(r, "ccn")
+	if ccn == "" {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("Incorrect url parameter"))
+		return
+	}
+	var countryIndex int
+	for i, c := range *m.App.Data {
+		if c.Ccn3 == ccn {
+			countryIndex = i
+		}
+	}
+	if (*m.App.Data)[countryIndex].Name.Common == "" {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("Incorrect url parameter"))
+		return
+	}
+	(*m.App.Data)[countryIndex].Likes++
+	country := (*m.App.Data)[countryIndex]
+
+	contentType := r.Header.Get("accept")
+	switch contentType {
+	case "application/json":
+		msg, err := json.Marshal(country)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+		w.Header().Add("Content-Type", "application/json")
+		w.Write(msg)
+		return
+	default:
+		if r.Header.Get("Hx-Request") != "" {
+
+			page := render.GetPage(w, "country", country)
+			if page == nil {
+				w.WriteHeader(http.StatusNotFound)
+				w.Write([]byte("Incorrect url parameter"))
+				return
+			}
+			page.ExecuteTemplate(w, "country_likes", country)
+		} else {
+			render.RenderPage(w, "country", country)
+		}
+		return
+	}
 }
 
 var elementsPerPage = 10
 
 func (m *Repository) Countries(w http.ResponseWriter, r *http.Request) {
-	page := chi.URLParam(r, "page")
+	page := r.URL.Query().Get("page")
 	count := 0
 	var err error
 	if page != "" {

@@ -5,7 +5,7 @@
 export const load = async (loadEvent) => {
   const { params } = loadEvent;
   const { id } = params;
-  const response = await fetch(`http://localhost:8080/countries/${id}/page`, {
+  const response = await fetch(`http://localhost:8080/countries?page=${id}`, {
     method: "GET",
     headers: {
       accept: "application/json",

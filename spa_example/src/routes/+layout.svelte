@@ -1,3 +1,18 @@
+<script>
+  import { ssr } from "./+layout";
+  let title = "";
+  $: {
+    title = !ssr ? "SPA site" : "Hydration site";
+  }
+</script>
+
+<svelte:head>
+  <title>{title}</title>
+  <meta
+    name="description"
+    content="This is where the description goes for SEO"
+  />
+</svelte:head>
 <header>
   <nav>
     <a href="/">Logo</a>

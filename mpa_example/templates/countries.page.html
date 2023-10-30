@@ -1,0 +1,40 @@
+{{define "title"}} Country List {{end}} {{define "styles"}} {{end}} {{define
+"body"}}
+<div class="container">
+  <nav class="page-container">
+    {{with .pages}} {{range .}}
+    <a class="page" href="/countries?page={{.}}" data-id="{{.}}">{{.}}</a>
+    {{end}} {{end}}
+  </nav>
+  {{with .data}}
+  <div class="card-container">
+    {{range .}}
+    <article class="card">
+      <img src="{{.Flags.Png}}" alt="{{.Flags.Alt}}" />
+      <header>
+        <a href="/country/{{.Ccn3}}"> <h2>{{.Name.Common}}</h2></a>
+      </header>
+      <div class="content">
+        <div>
+          <span class="property">Population</span>:
+          <span class="population">{{.Population}}</span>
+        </div>
+        <div>
+          <span class="property">Region</span>:
+          <span>{{.Region}}</span>
+        </div>
+        <div>
+          <span class="property">Capital</span>: {{with .Capital}}
+          <span>{{index . 0}}</span>
+          {{else}}
+          <span>-</span>
+          {{end}}
+        </div>
+      </div>
+    </article>
+    {{end}}
+  </div>
+  {{end}}
+</div>
+
+{{end}} {{define "scripts"}} {{end}}

@@ -1,20 +1,9 @@
 <script>
-  import { fetchCountries } from "$lib";
   import CountryCard from "$lib/component/CountryCard.svelte";
-  import { onMount } from "svelte";
 
-  let countries = [];
-  /**
-   * @param {string} index
-   */
-  async function loadData(index) {
-    const [res, _status] = await fetchCountries(parseInt(index));
-    countries = res.data;
-  }
-
-  onMount(async () => {
-    await loadData(0);
-  });
+  export let data;
+  // @ts-ignore
+  $: countries = data.countries;
 </script>
 
 <div class="hero">

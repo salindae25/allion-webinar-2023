@@ -1,5 +1,8 @@
 <script>
-  export let data = null;
+  /**
+   * @type {{ flags: { png: any; alt: any; }; ccn3: any; name: { common: any; }; population: any; region: any; capital: string | any[]; } | null}
+   */
+  export let data;
 </script>
 
 <article class="card">
